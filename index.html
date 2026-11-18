@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+Hi<!DOCTYPE html> 
 
 <html lang="en">  
 <head>  
@@ -184,16 +184,6 @@ function startJarvis(){
   window.speechSynthesis.speak(speech);
 }
 
-if("speechSynthesis" in window){  
-const voice=new SpeechSynthesisUtterance(  
-"Good day, sir. JARVIS systems are online. How may I assist you?"  
-);  
-voice.lang="en-IN";  
-voice.rate=0.9;  
-speechSynthesis.speak(voice);  
-}  
-}  
-  
 function listenToJarvis(){
 
 if(!("webkitSpeechRecognition" in window)){
