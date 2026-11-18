@@ -170,7 +170,20 @@ year:"numeric"
 updateClock();  
 setInterval(updateClock,1000);  
   
-function startJarvis(){  
+
+function startJarvis(){
+  const message = "Hello sir. I am JARVIS. Your personal assistant is ready. How may I help you?";
+  const speech = new SpeechSynthesisUtterance(message);
+
+  speech.lang = "en-IN";
+  speech.rate = 0.9;
+  speech.pitch = 1.05;
+  speech.volume = 1;
+
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(speech);
+}
+
 if("speechSynthesis" in window){  
 const voice=new SpeechSynthesisUtterance(  
 "Good day, sir. JARVIS systems are online. How may I assist you?"  
