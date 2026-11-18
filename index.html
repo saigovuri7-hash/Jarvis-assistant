@@ -250,11 +250,7 @@ async function listenToJarvis() {
       "● VOICE ERROR: " + event.error;
   };
 
-  recognition.start();
-}
- 
-
-if(!("webkitSpeechRecognition" in window)){
+  
 alert("Voice recognition is not supported in this browser.");
 return;
 }
