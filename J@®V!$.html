@@ -1,0 +1,226 @@
+<!DOCTYPE html> 
+
+<html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<meta name="theme-color" content="#030914">  
+<title>JARVIS 2.0</title>  <style>  
+*{box-sizing:border-box}  
+body{  
+margin:0;  
+min-height:100vh;  
+background:radial-gradient(circle,#123b5b,#030914 75%);  
+color:#a9eaff;  
+font-family:Arial,sans-serif;  
+text-align:center;  
+padding:25px 15px;  
+}  
+h1{  
+font-size:32px;  
+letter-spacing:8px;  
+color:#65dfff;  
+text-shadow:0 0 18px #00bfff;  
+}  
+.subtitle{  
+font-size:11px;  
+letter-spacing:3px;  
+color:#76abc9;  
+}  
+.core{  
+width:180px;  
+height:180px;  
+border:3px solid #26cfff;  
+border-radius:50%;  
+margin:35px auto;  
+display:flex;  
+align-items:center;  
+justify-content:center;  
+font-size:55px;  
+box-shadow:0 0 25px #00bfff;  
+ animation:glow 3s ease-in-out infinite alternate, rotate 12s linear infinite;
+ position:relative;
+overflow:visible;
+}  
+  
+.inner-core{  
+width:110px;  
+height:110px;  
+border:2px solid #70eaff;  
+border-radius:50%;  
+display:flex;  
+align-items:center;  
+justify-content:center;  
+color:white;  
+font-size:45px;  
+box-shadow:inset 0 0 20px #00bfff;  
+text-shadow:0 0 20px #00dfff;  
+animation:pulse 1s ease-in-out infinite alternate; 
+} 
+
+.energy-ring{
+position:absolute;
+width:145px;
+height:145px;
+border:3px solid transparent;
+border-top:3px solid #00eaff;
+border-right:3px solid #00bfff;
+border-radius:50%;
+animation:rotate 3s linear infinite;
+pointer-events:none;
+}
+
+.scanner{
+position:absolute;
+left:50%;
+top:35px;
+width:150px;
+height:2px;
+background:linear-gradient(90deg,transparent,#00eaff,white,#00eaff,transparent);
+box-shadow:0 0 12px #00eaff;
+transform:translateX(-50%);
+animation:scan 2s ease-in-out infinite alternate;
+pointer-events:none;
+}
+
+@keyframes scan{
+from{top:35px}
+to{top:145px}
+}
+
+@keyframes glow{
+from{box-shadow:0 0 12px #00bfff}
+to{box-shadow:0 0 40px #00dfff}
+} 
+
+@keyframes rotate{
+from{transform:rotate(0deg)}
+to{transform:rotate(360deg)}
+}
+
+@keyframes pulse{
+from{
+box-shadow:inset 0 0 10px #00bfff;
+transform:scale(1);
+}
+to{
+box-shadow:inset 0 0 35px #00dfff;
+transform:scale(1.06);
+}
+}
+  
+#clock{   
+font-size:38px;  
+color:white;  
+margin-top:15px;  
+}  
+#date{  
+color:#8ccce8;  
+margin-top:8px;  
+}  
+.status{  
+color:#53e9b0;  
+margin:25px;  
+font-size:13px;  
+}  
+button{  
+display:block;  
+width:90%;  
+max-width:330px;  
+margin:12px auto;  
+padding:16px;  
+background:#071b30;  
+color:#9beaff;  
+border:1px solid #26cfff;  
+border-radius:12px;  
+font-size:15px;  
+}  
+.footer{  
+margin-top:35px;  
+color:#6b9db8;  
+font-size:11px;  
+}  
+</style>  </head>  <body>  <h1>J.A.R.V.I.S</h1>  
+<div class="subtitle">PERSONAL AI SYSTEM</div>  <div class="core">  
+  <div class="energy-ring"></div>
+<div class="scanner"></div>
+<div class="inner-core">J</div> 
+</div>   <div id="clock">00:00:00</div>  
+<div id="date">Loading date...</div>  <div class="status">● ALL SYSTEMS ONLINE</div>  <button onclick="startJarvis()">ACTIVATE JARVIS</button>
+<button onclick="openGemini()">OPEN AI BRAIN</button>
+<button onclick="openApp('https://www.youtube.com')">OPEN YOUTUBE</button>
+<button onclick="openApp('https://www.whatsapp.com')">OPEN WHATSAPP</button>
+<button onclick="listenToJarvis()">
+🎙 SPEAK TO JARVIS
+</button>
+
+<div class="footer">JARVIS 2.0 · PERSONAL ASSISTANT</div>  <script>  
+function updateClock(){  
+const now=new Date();  
+document.getElementById("clock").textContent=  
+now.toLocaleTimeString("en-IN");  
+document.getElementById("date").textContent=  
+now.toLocaleDateString("en-IN",{  
+weekday:"long",  
+day:"numeric",  
+month:"long",  
+year:"numeric"  
+});  
+}  
+updateClock();  
+setInterval(updateClock,1000);  
+  
+function startJarvis(){  
+if("speechSynthesis" in window){  
+const voice=new SpeechSynthesisUtterance(  
+"Good day, sir. JARVIS systems are online. How may I assist you?"  
+);  
+voice.lang="en-IN";  
+voice.rate=0.9;  
+speechSynthesis.speak(voice);  
+}  
+}  
+  
+function listenToJarvis(){
+
+if(!("webkitSpeechRecognition" in window)){
+alert("Voice recognition is not supported in this browser.");
+return;
+}
+
+const recognition = new webkitSpeechRecognition();
+
+recognition.lang = "en-IN";
+recognition.continuous = false;
+recognition.interimResults = false;
+
+recognition.onstart = function(){
+document.querySelector(".status").textContent = "● LISTENING...";
+};
+
+recognition.onresult = function(event){
+
+const command = event.results[0][0].transcript;
+
+document.querySelector(".status").textContent =
+"● YOU SAID: " + command;
+
+};
+recognition.onerror = function(event){
+document.querySelector(".status").textContent =
+"● VOICE ERROR: " + event.error;
+};
+
+recognition.onend = function(){
+console.log("Listening finished");
+};
+
+recognition.start();
+
+} 
+  
+function openGemini(){
+window.location.href="https://gemini.google.com/app";
+} 
+</script>  </body>  
+</html>  
