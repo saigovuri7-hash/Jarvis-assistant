@@ -1,1 +1,383 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#030914">
+<title>JARVIS 3.0</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at center, #123b5c, #030914 65%);
+  color: #d9f5ff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+header {
+  padding: 25px 10px 5px;
+}
+
+h1 {
+  color: #69e5ff;
+  letter-spacing: 7px;
+  font-size: 30px;
+  text-shadow: 0 0 15px #00bfff;
+}
+
+.subtitle {
+  color: #83b9d0;
+  letter-spacing: 3px;
+  font-size: 11px;
+}
+
+.clock {
+  margin-top: 25px;
+  font-size: 27px;
+  letter-spacing: 3px;
+  color: #a9efff;
+}
+
+.date {
+  color: #79a9bd;
+  font-size: 13px;
+  margin-top: 7px;
+}
+
+.core-container {
+  height: 290px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 10px;
+}
+
+.core {
+  width: 155px;
+  height: 155px;
+  border-radius: 50%;
+  border: 3px solid #52dcff;
+  box-shadow: 0 0 20px #00bfff,
+              inset 0 0 25px #008cff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 3s infinite ease-in-out;
+  position: relative;
+}
+
+.core::before,
+.core::after {
+  content: "";
+  position: absolute;
+  border: 1px solid #26cfff;
+  border-radius: 50%;
+}
+
+.core::before {
+  width: 190px;
+  height: 190px;
+  animation: rotate 8s linear infinite;
+  border-left-color: transparent;
+}
+
+.core::after {
+  width: 220px;
+  height: 220px;
+  animation: rotate 12s linear infinite reverse;
+  border-right-color: transparent;
+}
+
+.core-text {
+  color: #8eeeff;
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  text-shadow: 0 0 15px #00cfff;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px #00bfff,
+                inset 0 0 25px #008cff;
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 40px #00bfff,
+                inset 0 0 35px #008cff;
+  }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.status {
+  margin: 15px auto;
+  padding: 12px;
+  width: 90%;
+  max-width: 420px;
+  min-height: 45px;
+  color: #72eaff;
+  border: 1px solid #145b7a;
+  background: rgba(0, 30, 55, 0.6);
+  border-radius: 8px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+  margin: 25px auto;
+  width: 90%;
+  max-width: 350px;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #35cfff;
+  border-radius: 8px;
+  background: rgba(0, 105, 160, 0.2);
+  color: #a9efff;
+  font-size: 13px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 180, 255, 0.2);
+}
+
+button:active {
+  background: #075b80;
+  transform: scale(0.98);
+}
+
+footer {
+  padding: 25px 10px;
+  color: #557e91;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>JARVIS</h1>
+  <div class="subtitle">PERSONAL AI ASSISTANT</div>
+</header>
+
+<div class="clock" id="clock">00:00:00</div>
+<div class="date" id="date"></div>
+
+<div class="core-container">
+  <div class="core">
+    <div class="core-text">J.A.R.V.I.S</div>
+  </div>
+</div>
+
+<div class="status">
+  ● SYSTEM ONLINE
+</div>
+
+<div class="buttons">
+
+  <button onclick="startJarvis()">
+    ACTIVATE JARVIS
+  </button>
+
+  <button onclick="listenToJarvis()">
+    🎙 SPEAK TO JARVIS
+  </button>
+
+  <button onclick="openGemini()">
+    OPEN GEMINI
+  </button>
+
+  <button onclick="openApp('https://www.youtube.com')">
+    OPEN YOUTUBE
+  </button>
+
+  <button onclick="openApp('https://www.whatsapp.com')">
+    OPEN WHATSAPP
+  </button>
+
+</div>
+
+<footer>
+  JARVIS 3.0 · PERSONAL ASSISTANT
+</footer>
+
+<script>
+
+// CLOCK AND DATE
+
+function updateClock() {
+  const now = new Date();
+
+  document.getElementById("clock").textContent =
+    now.toLocaleTimeString("en-IN");
+
+  document.getElementById("date").textContent =
+    now.toLocaleDateString("en-IN", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+
+// STATUS
+
+function setStatus(message) {
+  document.querySelector(".status").textContent =
+    "● " + message;
+}
+
+
+// SPEAKING VOICE
+
+function speak(text) {
+  window.speechSynthesis.cancel();
+
+  const speech = new SpeechSynthesisUtterance(text);
+
+  speech.lang = "en-IN";
+  speech.rate = 0.9;
+  speech.pitch = 1.05;
+  speech.volume = 1;
+
+  window.speechSynthesis.speak(speech);
+}
+
+
+// ACTIVATE JARVIS
+
+function startJarvis() {
+  setStatus("JARVIS IS ONLINE");
+
+  speak(
+    "Hello. I am JARVIS, your personal AI assistant. All systems are online. How may I help you today?"
+  );
+}
+
+
+// OPEN GEMINI
+
+function openGemini() {
+  window.location.href =
+    "https://gemini.google.com/app";
+}
+
+
+// OPEN APPS
+
+function openApp(url) {
+  window.open(url, "_blank");
+}
+
+
+// VOICE RECOGNITION AND AI CONNECTION
+
+async function listenToJarvis() {
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert("Voice recognition is not supported.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = "en-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  recognition.onstart = function() {
+    setStatus("LISTENING...");
+  };
+
+  recognition.onresult = async function(event) {
+
+    const command =
+      event.results[0][0].transcript;
+
+    setStatus("YOU SAID: " + command);
+
+    setStatus("JARVIS IS THINKING...");
+
+    try {
+
+      const response = await fetch(
+        "https://jarvis-brain.saigovuri7.workers.dev",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: command
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Connection failed"
+        );
+      }
+
+      if (!data.reply) {
+        throw new Error("No reply received");
+      }
+
+      setStatus("JARVIS: " + data.reply);
+
+      speak(data.reply);
+
+    } catch (error) {
+
+      setStatus("ERROR: " + error.message);
+
+    }
+  };
+
+  recognition.onerror = function(event) {
+    setStatus("VOICE ERROR: " + event.error);
+  };
+
+  recognition.onend = function() {
+    console.log("Listening finished");
+  };
+
+  recognition.start();
+}
+
+</script>
+
+</body>
+  </html>
+
