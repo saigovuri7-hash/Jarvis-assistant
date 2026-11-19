@@ -224,6 +224,8 @@ footer {
 
 <script>
 
+let jarvisMemory = [];
+
 // CLOCK AND DATE
 
 function updateClock() {
@@ -354,7 +356,17 @@ async function listenToJarvis() {
       if (!data.reply) {
         throw new Error("No reply received");
       }
+jarvisMemory.push({
+  role: "user",
+  parts: [{ text: command }]
+});
 
+jarvisMemory.push({
+  role: "model",
+  parts: [{ text: data.reply }]
+});
+
+jarvisMemory = jarvisMemory.slice(-10);
       setStatus("JARVIS: " + data.reply);
 
       speak(data.reply);
@@ -377,8 +389,9 @@ async function listenToJarvis() {
   recognition.start();
 }
 
+
+
 </script>
-  let jarvisMemory = [];
 
 </body>
   </html>
