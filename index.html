@@ -337,8 +337,9 @@ async function listenToJarvis() {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            message: command
-          })
+  message: command,
+  history: jarvisMemory
+})
         }
       );
 
@@ -377,6 +378,7 @@ async function listenToJarvis() {
 }
 
 </script>
+  let jarvisMemory = [];
 
 </body>
   </html>
