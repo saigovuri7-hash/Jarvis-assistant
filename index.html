@@ -225,6 +225,13 @@ footer {
 <script>
 
 let jarvisMemory = [];
+  let jarvisSessionId = localStorage.getItem("jarvisSessionId");
+
+if (!jarvisSessionId) {
+  jarvisSessionId = "jarvis_" + Date.now() + "_" +
+    Math.random().toString(36).slice(2, 12);
+  localStorage.setItem("jarvisSessionId", jarvisSessionId);
+}
 
 // CLOCK AND DATE
 
@@ -340,7 +347,7 @@ async function listenToJarvis() {
           },
           body: JSON.stringify({
   message: command,
-  history: jarvisMemory
+  sessionId: jarvisSessionId
 })
         }
       );
