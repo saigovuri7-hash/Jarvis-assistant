@@ -2,403 +2,322 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#030914">
-<title>J.A.R.V.I.S 6.3</title>
+<title>J.A.R.V.I.S 9.0</title>
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at center,#102b49 0%,#061426 40%,#020711 100%);
+  color:#bceaff;
+  font-family:Arial,sans-serif;
+  text-align:center;
+  overflow-x:hidden;
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  padding: 20px;
-  background: radial-gradient(circle at 50% 35%, #07335b, #020914 70%);
-  color: #a8eaff;
-  font-family: Arial, sans-serif;
-  text-align: center;
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:repeating-linear-gradient(
+    transparent 0px,
+    transparent 3px,
+    rgba(40,170,255,.035) 4px
+  );
 }
 
-.clock {
-  font-size: 38px;
-  letter-spacing: 4px;
-  margin-top: 5px;
-  text-shadow: 0 0 15px #00aaff;
+header{
+  padding:22px 10px 5px;
+  letter-spacing:5px;
+  font-size:13px;
+  color:#58d8ff;
 }
 
-.date {
-  color: #83aabe;
-  margin-top: 8px;
-  font-size: 17px;
+h1{
+  font-size:36px;
+  letter-spacing:9px;
+  margin:8px 0;
+  color:#d7f5ff;
+  text-shadow:0 0 15px #00aaff;
 }
 
-.core {
-  width: 220px;
-  height: 220px;
-  border: 5px solid #42d5ff;
-  border-radius: 50%;
-  margin: 100px auto 75px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 25px #00aaff, inset 0 0 30px #0066aa;
-  animation: glow 3s infinite alternate;
-  position: relative;
+#clock{
+  color:#63caff;
+  font-size:14px;
+  letter-spacing:2px;
+  margin:12px;
 }
 
-.core::before,
-.core::after {
-  content: "";
-  position: absolute;
-  border: 2px solid #39caff;
-  border-radius: 50%;
+.reactor{
+  width:190px;
+  height:190px;
+  margin:25px auto;
+  border:3px solid #28cfff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:
+    0 0 15px #00bfff,
+    inset 0 0 20px #00bfff,
+    0 0 55px rgba(0,160,255,.5);
+  animation:pulse 3s infinite ease-in-out;
 }
 
-.core::before {
-  width: 270px;
-  height: 270px;
-  border-left-color: transparent;
-  border-right-color: transparent;
-  animation: spin 8s linear infinite;
+.reactor-inner{
+  width:125px;
+  height:125px;
+  border:2px solid #8beaff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+  color:#b9f5ff;
+  box-shadow:0 0 25px #00c8ff;
 }
 
-.core::after {
-  width: 310px;
-  height: 310px;
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-  animation: spin 12s linear infinite reverse;
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(1.04);opacity:.75}
 }
 
-.core h1 {
-  font-size: 27px;
-  letter-spacing: 5px;
+.panel{
+  width:92%;
+  max-width:600px;
+  margin:18px auto;
+  padding:17px;
+  border:1px solid rgba(47,190,255,.5);
+  border-radius:12px;
+  background:rgba(4,22,40,.75);
+  box-shadow:0 0 15px rgba(0,150,255,.12);
 }
 
-@keyframes glow {
-  from { box-shadow: 0 0 15px #00aaff; }
-  to { box-shadow: 0 0 45px #00aaff, inset 0 0 30px #0077cc; }
+#status{
+  color:#55e6ff;
+  font-size:13px;
+  letter-spacing:2px;
+  margin:10px;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+#response{
+  min-height:65px;
+  line-height:1.6;
+  white-space:pre-wrap;
+  text-align:left;
+  color:#d6f5ff;
+  font-size:15px;
 }
 
-.status {
-  border: 1px solid #14658a;
-  border-radius: 14px;
-  padding: 22px;
-  margin: 30px auto;
-  max-width: 620px;
-  background: #05213a;
+input{
+  width:100%;
+  padding:14px;
+  margin:8px 0;
+  border:1px solid #168acb;
+  border-radius:8px;
+  background:#06182a;
+  color:white;
+  font-size:16px;
+  outline:none;
 }
 
-button {
-  width: 100%;
-  max-width: 570px;
-  padding: 21px 12px;
-  margin: 10px auto;
-  display: block;
-  background: rgba(0, 65, 110, 0.35);
-  color: #a8eaff;
-  border: 1px solid #43cfff;
-  border-radius: 13px;
-  font-size: 16px;
-  letter-spacing: 3px;
-  cursor: pointer;
-  box-shadow: 0 0 12px #0077aa;
+button{
+  padding:12px 15px;
+  margin:5px;
+  border:1px solid #25bfff;
+  border-radius:7px;
+  background:rgba(0,110,180,.16);
+  color:#a9eaff;
+  font-size:13px;
+  letter-spacing:1px;
+  cursor:pointer;
 }
 
-button:active {
-  background: #075080;
+button:active{
+  background:#087db5;
+  color:white;
 }
 
-button:disabled {
-  opacity: 0.5;
+button:disabled{
+  opacity:.45;
 }
 
-.chat {
-  max-width: 620px;
-  margin: 30px auto;
-  text-align: left;
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
 }
 
-.chat h3 {
-  text-align: center;
-  letter-spacing: 3px;
+.grid button{
+  width:100%;
+  margin:0;
 }
 
-.response {
-  min-height: 90px;
-  max-height: 300px;
-  overflow-y: auto;
-  padding: 18px;
-  border: 1px solid #17648b;
-  border-radius: 12px;
-  background: rgba(2, 18, 35, 0.85);
-  line-height: 1.6;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+.small{
+  font-size:11px;
+  color:#5799bb;
+  letter-spacing:1px;
+  margin:20px 0;
 }
 
-.input-area {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.input-area input {
-  min-width: 0;
-  flex: 1;
-  padding: 16px;
-  border-radius: 10px;
-  border: 1px solid #39caff;
-  background: #06182a;
-  color: white;
-  font-size: 16px;
-}
-
-.input-area input::placeholder {
-  color: #7899ad;
-}
-
-.input-area button {
-  width: auto;
-  margin: 0;
-  padding: 14px;
-  font-size: 14px;
-  letter-spacing: 1px;
-}
-
-.small {
-  font-size: 12px;
-  color: #66869c;
-  margin: 35px 0 10px;
-}
-
-@media(max-width: 400px) {
-  .core {
-    margin-top: 90px;
-  }
-
-  .input-area button {
-    padding: 12px 9px;
-  }
+footer{
+  padding:15px;
+  color:#397b9c;
+  font-size:10px;
+  letter-spacing:2px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="clock" id="clock">00:00:00</div>
-<div class="date" id="date">Loading date...</div>
+<header>STARK INDUSTRIES • PERSONAL AI SYSTEM</header>
 
-<div class="core">
-  <h1>J.A.R.V.I.S</h1>
+<h1>J.A.R.V.I.S</h1>
+<div>JUST A RATHER VERY INTELLIGENT SYSTEM</div>
+
+<div id="clock">INITIALIZING...</div>
+
+<div class="reactor">
+  <div class="reactor-inner">J</div>
 </div>
 
-<div class="status" id="status">
-  ● SYSTEM ONLINE
+<div id="status">● SYSTEM ONLINE</div>
+
+<div class="panel">
+  <div class="small">JARVIS RESPONSE</div>
+  <div id="response">
+    Good day. JARVIS systems are online. How may I assist you?
+  </div>
 </div>
 
-<button onclick="activateJarvis()">
-  ACTIVATE JARVIS
-</button>
+<div class="panel">
+  <div class="small">COMMUNICATION INTERFACE</div>
 
-<button onclick="listenToJarvis()">
-  🎙️ SPEAK TO JARVIS
-</button>
+  <input
+    id="messageInput"
+    type="text"
+    placeholder="Speak or type your command..."
+    autocomplete="off"
+  >
 
-<button id="continuousButton" onclick="toggleContinuousConversation()">
-  🔁 START CONTINUOUS CONVERSATION
-</button>
-  <button id="wakeWordButton" onclick="toggleWakeWord()">
-  🎧 ENABLE HEY JARVIS
+  <button id="sendButton" onclick="sendMessage()">
+    SEND COMMAND
   </button>
 
-<div class="chat">
-  <h3>JARVIS COMMUNICATION</h3>
+  <button onclick="listenToJarvis()">
+    🎙 SPEAK TO JARVIS
+  </button>
 
-  <div class="response" id="response">
-    JARVIS: Hello. I am ready to assist you.
-  </div>
+  <button id="continuousButton" onclick="toggleContinuousConversation()">
+    🔁 START CONTINUOUS CONVERSATION
+  </button>
 
-  <div class="input-area">
-    <input
-      type="text"
-      id="messageInput"
-      placeholder="Type your message..."
-      autocomplete="off"
-    >
+  <button id="wakeWordButton" onclick="toggleWakeWord()">
+    🎧 ENABLE HEY JARVIS
+  </button>
+</div>
 
-    <button id="sendButton" onclick="sendMessage()">
-      SEND
-    </button>
+<div class="panel">
+  <div class="small">APPLICATION SHORTCUTS</div>
+
+  <div class="grid">
+    <button onclick="openYouTube()">▶ YOUTUBE</button>
+    <button onclick="openWhatsApp()">● WHATSAPP</button>
+    <button onclick="openGemini()">✦ GEMINI</button>
+    <button onclick="openGoogle()">⌕ GOOGLE</button>
   </div>
 </div>
 
-<button onclick="openGemini()">
-  OPEN GEMINI
-</button>
+<div class="panel">
+  <div class="small">SYSTEM CONTROLS</div>
 
-<button onclick="openYouTube()">
-  OPEN YOUTUBE
-</button>
-
-<button onclick="openWhatsApp()">
-  OPEN WHATSAPP
-</button>
+  <button onclick="activateJarvis()">ACTIVATE JARVIS</button>
+  <button onclick="stopAllListening()">STOP LISTENING</button>
+  <button onclick="showSystemInfo()">SYSTEM DIAGNOSTICS</button>
+</div>
 
 <div class="small">
-  J.A.R.V.I.S 6.3 · PERSONAL AI ASSISTANT
+  JARVIS 9.0 • VOICE INTELLIGENCE • SMART MEMORY
 </div>
+
+<footer>DESIGNED FOR PERSONAL ASSISTANCE</footer>
 
 <script>
 
-// =================================
-// JARVIS CONFIGURATION
-// =================================
+// ======================================
+// 1. JARVIS CONNECTION
+// ======================================
 
 const WORKER_URL =
-"https://jarvis-brain.saigovuri7.workers.dev";
+  "https://jarvis-brain.saigovuri7-hash.workers.dev";
 
-let jarvisSessionId =
-localStorage.getItem("jarvisSessionId");
+let jarvisSessionId = localStorage.getItem("jarvisSessionId");
 
 if (!jarvisSessionId) {
   jarvisSessionId =
     "jarvis_" + Date.now() + "_" +
     Math.random().toString(36).slice(2, 12);
 
-  localStorage.setItem(
-    "jarvisSessionId",
-    jarvisSessionId
-  );
+  localStorage.setItem("jarvisSessionId", jarvisSessionId);
 }
 
-// =================================
-// CLOCK AND DATE
-// =================================
+// ======================================
+// 2. SYSTEM VARIABLES
+// ======================================
+
+let continuousMode = false;
+let wakeWordEnabled = false;
+let continuousRecognition = null;
+let wakeRecognition = null;
+let isProcessing = false;
+
+// ======================================
+// 3. DISPLAY FUNCTIONS
+// ======================================
+
+function showResponse(text) {
+  document.getElementById("response").textContent = text;
+}
+
+function setStatus(text) {
+  document.getElementById("status").textContent = text;
+}
+
+// ======================================
+// 4. CLOCK
+// ======================================
 
 function updateClock() {
   const now = new Date();
 
   document.getElementById("clock").textContent =
-    now.toLocaleTimeString("en-US", {
-      hour12: true
-    });
-
-  document.getElementById("date").textContent =
-    now.toLocaleDateString("en-US", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric"
-    });
+    now.toLocaleDateString() + " | " +
+    now.toLocaleTimeString();
 }
 
 updateClock();
 setInterval(updateClock, 1000);
 
-// =================================
-// DISPLAY RESPONSE
-// =================================
-
-function showResponse(message) {
-  document.getElementById("response").textContent =
-    "JARVIS: " + message;
-}
-
-// =================================
-// SPEAK RESPONSE
-// =================================
-
-let continuousMode = false;
-  let wakeWordEnabled = false;
-let wakeRecognition = null;
-let continuousRecognition = null;
+// ======================================
+// 5. JARVIS VOICE
+// ======================================
 
 function speak(text) {
   if (!("speechSynthesis" in window)) {
-    return;
-  }
-function toggleWakeWord() {
-  const button = document.getElementById("wakeWordButton");
-
-  const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if (!SpeechRecognition) {
-    showResponse("Wake word detection is not supported.");
+    if (continuousMode) {
+      isProcessing = false;
+      startContinuousListening();
+    }
     return;
   }
 
-  wakeWordEnabled = !wakeWordEnabled;
-
-  if (wakeWordEnabled) {
-    button.textContent = "⏹ DISABLE HEY JARVIS";
-    startWakeWordDetection();
-  } else {
-    button.textContent = "🎧 ENABLE HEY JARVIS";
-
-    if (wakeRecognition) {
-      wakeRecognition.stop();
-    }
-
-    document.getElementById("status").textContent =
-      "● SYSTEM ONLINE";
-  }
-}
-
-function startWakeWordDetection() {
-  if (!wakeWordEnabled || continuousMode) return;
-
-  const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  wakeRecognition = new SpeechRecognition();
-  wakeRecognition.lang = "en-US";
-  wakeRecognition.continuous = true;
-  wakeRecognition.interimResults = false;
-
-  wakeRecognition.onresult = function(event) {
-    for (
-      let i = event.resultIndex;
-      i < event.results.length;
-      i++
-    ) {
-      const transcript =
-        event.results[i][0].transcript.toLowerCase();
-
-      if (transcript.includes("hey jarvis")) {
-        wakeRecognition.stop();
-
-        continuousMode = true;
-
-        document.getElementById("continuousButton").textContent =
-          "⏹ STOP CONVERSATION";
-
-        document.getElementById("status").textContent =
-          "● JARVIS ACTIVATED";
-
-        setTimeout(startContinuousListening, 700);
-        break;
-      }
-    }
-  };
-
-  wakeRecognition.onend = function() {
-    if (wakeWordEnabled && !continuousMode) {
-      setTimeout(startWakeWordDetection, 1000);
-    }
-  };
-
-  wakeRecognition.start();
-}
   window.speechSynthesis.cancel();
 
   const speech = new SpeechSynthesisUtterance(text);
@@ -408,24 +327,41 @@ function startWakeWordDetection() {
   speech.pitch = 1.05;
   speech.volume = 1;
 
+  speech.onstart = function() {
+    setStatus("● JARVIS IS SPEAKING...");
+  };
+
   speech.onend = function() {
     if (continuousMode) {
+      isProcessing = false;
+      startContinuousListening();
+    } else if (!wakeWordEnabled) {
+      setStatus("● SYSTEM ONLINE");
+    }
+  };
+
+  speech.onerror = function() {
+    if (continuousMode) {
+      isProcessing = false;
       startContinuousListening();
     }
   };
 
   window.speechSynthesis.speak(speech);
 }
-// =================================
-// SEND MESSAGE TO CLOUDFLARE
-// =================================
+
+// ======================================
+// 6. SEND MESSAGE TO JARVIS
+// ======================================
 
 async function sendToJarvis(message) {
-  const status = document.getElementById("status");
   const sendButton = document.getElementById("sendButton");
 
-  status.textContent = "● JARVIS IS THINKING...";
+  isProcessing = true;
   sendButton.disabled = true;
+
+  setStatus("● JARVIS IS THINKING...");
+  showResponse("Processing your request...");
 
   try {
     const response = await fetch(WORKER_URL, {
@@ -439,11 +375,11 @@ async function sendToJarvis(message) {
       })
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-      throw new Error(data.error || "Server error");
+      throw new Error("Server error: " + response.status);
     }
+
+    const data = await response.json();
 
     if (!data.reply) {
       throw new Error("No reply received from JARVIS.");
@@ -452,96 +388,84 @@ async function sendToJarvis(message) {
     showResponse(data.reply);
     speak(data.reply);
 
-    status.textContent = "● SYSTEM ONLINE";
-
-    return data.reply;
-
   } catch (error) {
-    showResponse("Connection error: " + error.message);
-    status.textContent = "● CONNECTION ERROR";
-    return null;
+    isProcessing = false;
+
+    showResponse(
+      "Connection error. Please check your internet connection or Worker deployment."
+    );
+
+    setStatus("● CONNECTION ERROR");
+
+    console.error(error);
 
   } finally {
     sendButton.disabled = false;
   }
 }
 
-// =================================
-// TEXT MESSAGE
-// =================================
+// ======================================
+// 7. LOCAL VOICE COMMANDS
+// ======================================
 
 async function sendMessage() {
   const input = document.getElementById("messageInput");
   const message = input.value.trim();
 
-  if (!message) return;
+  if (!message || isProcessing) return;
 
   input.value = "";
 
-  const command = message.toLowerCase()
-    .replace(/[.,!?]/g, "")
-    .trim();
+  const command = message.toLowerCase();
 
-  // STOP VOICE LISTENING
   if (
     command === "stop listening" ||
-    command === "stop conversation"
+    command === "stop conversation" ||
+    command === "stop voice mode"
   ) {
-    continuousMode = false;
-    wakeWordEnabled = false;
-
-    if (continuousRecognition) {
-      continuousRecognition.stop();
-    }
-
-    if (wakeRecognition) {
-      wakeRecognition.stop();
-    }
-
-    window.speechSynthesis.cancel();
-
-    document.getElementById("continuousButton").textContent =
-      "🔁 START CONTINUOUS CONVERSATION";
-
-    document.getElementById("wakeWordButton").textContent =
-      "🎧 ENABLE HEY JARVIS";
-
-    document.getElementById("status").textContent =
-      "● SYSTEM ONLINE";
-
-    showResponse("Voice listening stopped.");
+    stopAllListening();
+    showResponse("Voice listening has been stopped.");
+    speak("Voice listening stopped.");
     return;
   }
 
-  // OPEN YOUTUBE
-  if (command.includes("open youtube")) {
+  if (command === "open youtube") {
     openYouTube();
     showResponse("Opening YouTube.");
     speak("Opening YouTube.");
     return;
   }
 
-  // OPEN WHATSAPP
-  if (command.includes("open whatsapp")) {
+  if (command === "open whatsapp") {
     openWhatsApp();
     showResponse("Opening WhatsApp.");
     speak("Opening WhatsApp.");
     return;
   }
 
-  // OPEN GEMINI
-  if (command.includes("open gemini")) {
+  if (command === "open gemini") {
     openGemini();
     showResponse("Opening Gemini.");
     speak("Opening Gemini.");
     return;
   }
 
-  // SEND OTHER MESSAGES TO AI
+  if (command === "open google") {
+    openGoogle();
+    showResponse("Opening Google.");
+    speak("Opening Google.");
+    return;
+  }
+
+  // All other commands go to your existing Worker.
+  // This includes saving, updating and deleting notes.
   await sendToJarvis(message);
 }
 
-// Send when Enter is pressed
+// ======================================
+// 8. ENTER KEY
+// ======================================
+
 document.getElementById("messageInput")
   .addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
@@ -550,9 +474,9 @@ document.getElementById("messageInput")
     }
   });
 
-// =================================
-// MICROPHONE INPUT
-// =================================
+// ======================================
+// 9. MANUAL VOICE INPUT
+// ======================================
 
 function listenToJarvis() {
   const SpeechRecognition =
@@ -560,9 +484,7 @@ function listenToJarvis() {
     window.webkitSpeechRecognition;
 
   if (!SpeechRecognition) {
-    showResponse(
-      "Speech recognition is not supported in this browser. Please use the text box."
-    );
+    showResponse("Speech recognition is not supported in this browser.");
     return;
   }
 
@@ -572,38 +494,35 @@ function listenToJarvis() {
   recognition.continuous = false;
   recognition.interimResults = false;
 
-  document.getElementById("status").textContent =
-    "● LISTENING...";
+  setStatus("● LISTENING...");
 
   recognition.onresult = function(event) {
     const command =
       event.results[0][0].transcript.trim();
 
-    document.getElementById("messageInput").value =
-      command;
-
+    document.getElementById("messageInput").value = command;
     sendMessage();
   };
 
   recognition.onerror = function(event) {
-    document.getElementById("status").textContent =
-      "● MICROPHONE ERROR: " + event.error;
+    setStatus("● MICROPHONE ERROR: " + event.error);
   };
 
   recognition.onend = function() {
-    if (
-      document.getElementById("status").textContent ===
-      "● LISTENING..."
-    ) {
-      document.getElementById("status").textContent =
-        "● SYSTEM ONLINE";
+    if (!continuousMode && !wakeWordEnabled && !isProcessing) {
+      setStatus("● SYSTEM ONLINE");
     }
   };
 
   recognition.start();
 }
+
+// ======================================
+// 10. CONTINUOUS CONVERSATION
+// ======================================
+
 function startContinuousListening() {
-  if (!continuousMode) return;
+  if (!continuousMode || isProcessing) return;
 
   const SpeechRecognition =
     window.SpeechRecognition ||
@@ -615,20 +534,29 @@ function startContinuousListening() {
     return;
   }
 
+  if (continuousRecognition) {
+    try {
+      continuousRecognition.stop();
+    } catch (error) {}
+  }
+
   continuousRecognition = new SpeechRecognition();
+
   continuousRecognition.lang = "en-US";
   continuousRecognition.continuous = false;
   continuousRecognition.interimResults = false;
 
   continuousRecognition.onstart = function() {
-    document.getElementById("status").textContent =
-      "● JARVIS IS LISTENING...";
+    if (continuousMode) {
+      setStatus("● JARVIS IS LISTENING...");
+    }
   };
 
   continuousRecognition.onresult = async function(event) {
-    const command = event.results[0][0].transcript.trim();
+    const command =
+      event.results[0][0].transcript.trim();
 
-    if (!command) return;
+    if (!command || !continuousMode) return;
 
     continuousRecognition.stop();
 
@@ -638,54 +566,96 @@ function startContinuousListening() {
   };
 
   continuousRecognition.onerror = function(event) {
-    document.getElementById("status").textContent =
-      "● MICROPHONE ERROR: " + event.error;
+    setStatus("● MICROPHONE ERROR: " + event.error);
   };
 
   continuousRecognition.onend = function() {
-    if (continuousMode && !window.speechSynthesis.speaking) {
+    if (continuousMode && !isProcessing &&
+        !window.speechSynthesis.speaking) {
       setTimeout(startContinuousListening, 700);
     }
   };
 
-  continuousRecognition.start();
+  try {
+    continuousRecognition.start();
+  } catch (error) {
+    console.log("Recognition restart:", error);
+  }
 }
 
 function toggleContinuousConversation() {
-  const button = document.getElementById("continuousButton");
-
-  continuousMode = !continuousMode;
+  const button =
+    document.getElementById("continuousButton");
 
   if (continuousMode) {
-    button.textContent = "⏹ STOP CONVERSATION";
-    startContinuousListening();
-  } else {
-    button.textContent = "🔁 START CONTINUOUS CONVERSATION";
+    continuousMode = false;
 
     if (continuousRecognition) {
-      continuousRecognition.stop();
+      try {
+        continuousRecognition.stop();
+      } catch (error) {}
     }
 
     window.speechSynthesis.cancel();
 
-    document.getElementById("status").textContent =
-      "● SYSTEM ONLINE";
+    button.textContent = "🔁 START CONTINUOUS CONVERSATION";
+    setStatus("● SYSTEM ONLINE");
+    return;
   }
+
+  wakeWordEnabled = false;
+
+  if (wakeRecognition) {
+    try {
+      wakeRecognition.stop();
+    } catch (error) {}
+  }
+
+  document.getElementById("wakeWordButton").textContent =
+    "🎧 ENABLE HEY JARVIS";
+
+  continuousMode = true;
+  isProcessing = false;
+
+  button.textContent = "⏹ STOP CONVERSATION";
+
+  startContinuousListening();
 }
-  function toggleWakeWord() {
-  const button = document.getElementById("wakeWordButton");
+
+// ======================================
+// 11. HEY JARVIS WAKE WORD
+// ======================================
+
+function toggleWakeWord() {
+  const button =
+    document.getElementById("wakeWordButton");
 
   if (wakeWordEnabled) {
     wakeWordEnabled = false;
 
     if (wakeRecognition) {
-      wakeRecognition.stop();
+      try {
+        wakeRecognition.stop();
+      } catch (error) {}
     }
 
     button.textContent = "🎧 ENABLE HEY JARVIS";
-    document.getElementById("status").textContent = "● SYSTEM ONLINE";
+    setStatus("● SYSTEM ONLINE");
     return;
   }
+
+  continuousMode = false;
+
+  if (continuousRecognition) {
+    try {
+      continuousRecognition.stop();
+    } catch (error) {}
+  }
+
+  window.speechSynthesis.cancel();
+
+  document.getElementById("continuousButton").textContent =
+    "🔁 START CONTINUOUS CONVERSATION";
 
   wakeWordEnabled = true;
   button.textContent = "⏹ DISABLE HEY JARVIS";
@@ -700,35 +670,50 @@ function startWakeWordDetection() {
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
-  if (!SpeechRecognition) return;
+  if (!SpeechRecognition) {
+    wakeWordEnabled = false;
+    showResponse("Wake-word recognition is not supported.");
+    return;
+  }
 
   wakeRecognition = new SpeechRecognition();
+
   wakeRecognition.lang = "en-US";
   wakeRecognition.continuous = true;
-  wakeRecognition.interimResults = false;
+  wakeRecognition.interimResults = true;
+
+  wakeRecognition.onstart = function() {
+    setStatus("● WAITING FOR HEY JARVIS...");
+  };
 
   wakeRecognition.onresult = function(event) {
     const transcript =
-      event.results[event.results.length - 1][0].transcript
-        .toLowerCase()
-        .trim();
-
-    document.getElementById("status").textContent =
-      "● HEARD: " + transcript;
+      event.results[event.results.length - 1][0]
+        .transcript.toLowerCase().trim();
 
     if (transcript.includes("hey jarvis")) {
-      wakeRecognition.stop();
+      wakeWordEnabled = false;
+
+      try {
+        wakeRecognition.stop();
+      } catch (error) {}
 
       continuousMode = true;
+
+      document.getElementById("wakeWordButton").textContent =
+        "🎧 ENABLE HEY JARVIS";
 
       document.getElementById("continuousButton").textContent =
         "⏹ STOP CONVERSATION";
 
-      document.getElementById("status").textContent =
-        "● JARVIS ACTIVATED";
+      showResponse("JARVIS activated. I am listening.");
 
-      setTimeout(startContinuousListening, 700);
+      speak("Yes, I am listening.");
     }
+  };
+
+  wakeRecognition.onerror = function(event) {
+    setStatus("● WAKE WORD ERROR: " + event.error);
   };
 
   wakeRecognition.onend = function() {
@@ -737,52 +722,106 @@ function startWakeWordDetection() {
     }
   };
 
-  wakeRecognition.onerror = function() {
-    if (wakeWordEnabled && !continuousMode) {
-      setTimeout(startWakeWordDetection, 1500);
-    }
-  };
+  try {
+    wakeRecognition.start();
+  } catch (error) {
+    console.log("Wake word start:", error);
+  }
+}
 
-  wakeRecognition.start();
-    }
-// =================================
-// ACTIVATE JARVIS
-// =================================
+// ======================================
+// 12. STOP ALL LISTENING
+// ======================================
+
+function stopAllListening() {
+  continuousMode = false;
+  wakeWordEnabled = false;
+  isProcessing = false;
+
+  if (continuousRecognition) {
+    try {
+      continuousRecognition.stop();
+    } catch (error) {}
+  }
+
+  if (wakeRecognition) {
+    try {
+      wakeRecognition.stop();
+    } catch (error) {}
+  }
+
+  window.speechSynthesis.cancel();
+
+  document.getElementById("continuousButton").textContent =
+    "🔁 START CONTINUOUS CONVERSATION";
+
+  document.getElementById("wakeWordButton").textContent =
+    "🎧 ENABLE HEY JARVIS";
+
+  setStatus("● SYSTEM ONLINE");
+}
+
+// ======================================
+// 13. APPLICATION SHORTCUTS
+// ======================================
+
+function openYouTube() {
+  window.open("https://www.youtube.com", "_blank");
+}
+
+function openWhatsApp() {
+  window.open("https://web.whatsapp.com", "_blank");
+}
+
+function openGemini() {
+  window.open("https://gemini.google.com", "_blank");
+}
+
+function openGoogle() {
+  window.open("https://www.google.com", "_blank");
+}
+
+// ======================================
+// 14. ACTIVATE JARVIS
+// ======================================
 
 function activateJarvis() {
   const greeting =
-    "Hello. I am JARVIS, your personal AI assistant. All systems are online. How may I help you today?";
+    "JARVIS systems are online. All available systems are ready. How may I assist you?";
 
   showResponse(greeting);
   speak(greeting);
 }
 
-// =================================
-// OPEN APPLICATIONS
-// =================================
+// ======================================
+// 15. SYSTEM DIAGNOSTICS
+// ======================================
 
-function openGemini() {
-  window.open(
-    "https://gemini.google.com/app",
-    "_blank"
-  );
-}
+function showSystemInfo() {
+  const voiceSupported =
+    !!(window.SpeechRecognition ||
+       window.webkitSpeechRecognition);
 
-function openYouTube() {
-  window.open(
-    "https://www.youtube.com/",
-    "_blank"
-  );
-}
+  const speechSupported =
+    "speechSynthesis" in window;
 
-function openWhatsApp() {
-  window.open(
-    "https://web.whatsapp.com/",
-    "_blank"
-  );
+  const info =
+    "JARVIS SYSTEM DIAGNOSTICS\n\n" +
+    "Worker connection: Configured\n" +
+    "Session memory: Active\n" +
+    "Voice recognition: " +
+    (voiceSupported ? "Available" : "Unavailable") + "\n" +
+    "Speech output: " +
+    (speechSupported ? "Available" : "Unavailable") + "\n" +
+    "Continuous mode: " +
+    (continuousMode ? "Active" : "Inactive") + "\n" +
+    "Wake word mode: " +
+    (wakeWordEnabled ? "Active" : "Inactive");
+
+  showResponse(info);
+  setStatus("● DIAGNOSTICS COMPLETE");
 }
 
 </script>
 
 </body>
-</html>
