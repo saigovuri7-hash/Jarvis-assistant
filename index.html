@@ -312,6 +312,9 @@ function showResponse(message) {
 // SPEAK RESPONSE
 // =================================
 
+let continuousMode = false;
+let continuousRecognition = null;
+
 function speak(text) {
   if (!("speechSynthesis" in window)) {
     return;
@@ -326,9 +329,14 @@ function speak(text) {
   speech.pitch = 1.05;
   speech.volume = 1;
 
+  speech.onend = function() {
+    if (continuousMode) {
+      startContinuousListening();
+    }
+  };
+
   window.speechSynthesis.speak(speech);
 }
-
 // =================================
 // SEND MESSAGE TO CLOUDFLARE
 // =================================
