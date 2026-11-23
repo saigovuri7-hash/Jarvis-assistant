@@ -821,7 +821,14 @@ function showSystemInfo() {
   showResponse(info);
   setStatus("● DIAGNOSTICS COMPLETE");
 }
-
+// JARVIS 10.0 - AUTOMATIC WAKE WORD
+window.addEventListener("load", function() {
+  setTimeout(function() {
+    if (!wakeWordEnabled) {
+      toggleWakeWord();
+    }
+  }, 1500);
+});
 </script>
 
 </body>
