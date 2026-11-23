@@ -313,13 +313,89 @@ function showResponse(message) {
 // =================================
 
 let continuousMode = false;
+  let wakeWordEnabled = false;
+let wakeRecognition = null;
 let continuousRecognition = null;
 
 function speak(text) {
   if (!("speechSynthesis" in window)) {
     return;
   }
+function toggleWakeWord() {
+  const button = document.getElementById("wakeWordButton");
 
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    showResponse("Wake word detection is not supported.");
+    return;
+  }
+
+  wakeWordEnabled = !wakeWordEnabled;
+
+  if (wakeWordEnabled) {
+    button.textContent = "⏹ DISABLE HEY JARVIS";
+    startWakeWordDetection();
+  } else {
+    button.textContent = "🎧 ENABLE HEY JARVIS";
+
+    if (wakeRecognition) {
+      wakeRecognition.stop();
+    }
+
+    document.getElementById("status").textContent =
+      "● SYSTEM ONLINE";
+  }
+}
+
+function startWakeWordDetection() {
+  if (!wakeWordEnabled || continuousMode) return;
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  wakeRecognition = new SpeechRecognition();
+  wakeRecognition.lang = "en-US";
+  wakeRecognition.continuous = true;
+  wakeRecognition.interimResults = false;
+
+  wakeRecognition.onresult = function(event) {
+    for (
+      let i = event.resultIndex;
+      i < event.results.length;
+      i++
+    ) {
+      const transcript =
+        event.results[i][0].transcript.toLowerCase();
+
+      if (transcript.includes("hey jarvis")) {
+        wakeRecognition.stop();
+
+        continuousMode = true;
+
+        document.getElementById("continuousButton").textContent =
+          "⏹ STOP CONVERSATION";
+
+        document.getElementById("status").textContent =
+          "● JARVIS ACTIVATED";
+
+        setTimeout(startContinuousListening, 700);
+        break;
+      }
+    }
+  };
+
+  wakeRecognition.onend = function() {
+    if (wakeWordEnabled && !continuousMode) {
+      setTimeout(startWakeWordDetection, 1000);
+    }
+  };
+
+  wakeRecognition.start();
+}
   window.speechSynthesis.cancel();
 
   const speech = new SpeechSynthesisUtterance(text);
