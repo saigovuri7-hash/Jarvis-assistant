@@ -465,7 +465,76 @@ function listenToJarvis() {
 
   recognition.start();
 }
+function startContinuousListening() {
+  if (!continuousMode) return;
 
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    continuousMode = false;
+    showResponse("Speech recognition is not supported.");
+    return;
+  }
+
+  continuousRecognition = new SpeechRecognition();
+  continuousRecognition.lang = "en-US";
+  continuousRecognition.continuous = false;
+  continuousRecognition.interimResults = false;
+
+  continuousRecognition.onstart = function() {
+    document.getElementById("status").textContent =
+      "● JARVIS IS LISTENING...";
+  };
+
+  continuousRecognition.onresult = async function(event) {
+    const command = event.results[0][0].transcript.trim();
+
+    if (!command) return;
+
+    continuousRecognition.stop();
+
+    document.getElementById("messageInput").value = command;
+
+    await sendMessage();
+  };
+
+  continuousRecognition.onerror = function(event) {
+    document.getElementById("status").textContent =
+      "● MICROPHONE ERROR: " + event.error;
+  };
+
+  continuousRecognition.onend = function() {
+    if (continuousMode && !window.speechSynthesis.speaking) {
+      setTimeout(startContinuousListening, 700);
+    }
+  };
+
+  continuousRecognition.start();
+}
+
+function toggleContinuousConversation() {
+  const button = document.getElementById("continuousButton");
+
+  continuousMode = !continuousMode;
+
+  if (continuousMode) {
+    button.textContent = "⏹ STOP CONVERSATION";
+    startContinuousListening();
+  } else {
+    button.textContent = "🔁 START CONTINUOUS CONVERSATION";
+
+    if (continuousRecognition) {
+      continuousRecognition.stop();
+    }
+
+    window.speechSynthesis.cancel();
+
+    document.getElementById("status").textContent =
+      "● SYSTEM ONLINE";
+  }
+}
 // =================================
 // ACTIVATE JARVIS
 // =================================
