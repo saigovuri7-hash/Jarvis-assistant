@@ -614,6 +614,79 @@ function toggleContinuousConversation() {
       "● SYSTEM ONLINE";
   }
 }
+  function toggleWakeWord() {
+  const button = document.getElementById("wakeWordButton");
+
+  if (wakeWordEnabled) {
+    wakeWordEnabled = false;
+
+    if (wakeRecognition) {
+      wakeRecognition.stop();
+    }
+
+    button.textContent = "🎧 ENABLE HEY JARVIS";
+    document.getElementById("status").textContent = "● SYSTEM ONLINE";
+    return;
+  }
+
+  wakeWordEnabled = true;
+  button.textContent = "⏹ DISABLE HEY JARVIS";
+
+  startWakeWordDetection();
+}
+
+function startWakeWordDetection() {
+  if (!wakeWordEnabled || continuousMode) return;
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) return;
+
+  wakeRecognition = new SpeechRecognition();
+  wakeRecognition.lang = "en-US";
+  wakeRecognition.continuous = true;
+  wakeRecognition.interimResults = false;
+
+  wakeRecognition.onresult = function(event) {
+    const transcript =
+      event.results[event.results.length - 1][0].transcript
+        .toLowerCase()
+        .trim();
+
+    document.getElementById("status").textContent =
+      "● HEARD: " + transcript;
+
+    if (transcript.includes("hey jarvis")) {
+      wakeRecognition.stop();
+
+      continuousMode = true;
+
+      document.getElementById("continuousButton").textContent =
+        "⏹ STOP CONVERSATION";
+
+      document.getElementById("status").textContent =
+        "● JARVIS ACTIVATED";
+
+      setTimeout(startContinuousListening, 700);
+    }
+  };
+
+  wakeRecognition.onend = function() {
+    if (wakeWordEnabled && !continuousMode) {
+      setTimeout(startWakeWordDetection, 1000);
+    }
+  };
+
+  wakeRecognition.onerror = function() {
+    if (wakeWordEnabled && !continuousMode) {
+      setTimeout(startWakeWordDetection, 1500);
+    }
+  };
+
+  wakeRecognition.start();
+    }
 // =================================
 // ACTIVATE JARVIS
 // =================================
