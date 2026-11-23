@@ -474,12 +474,70 @@ async function sendMessage() {
   const input = document.getElementById("messageInput");
   const message = input.value.trim();
 
-  if (!message) {
-    return;
-  }
+  if (!message) return;
 
   input.value = "";
 
+  const command = message.toLowerCase()
+    .replace(/[.,!?]/g, "")
+    .trim();
+
+  // STOP VOICE LISTENING
+  if (
+    command === "stop listening" ||
+    command === "stop conversation"
+  ) {
+    continuousMode = false;
+    wakeWordEnabled = false;
+
+    if (continuousRecognition) {
+      continuousRecognition.stop();
+    }
+
+    if (wakeRecognition) {
+      wakeRecognition.stop();
+    }
+
+    window.speechSynthesis.cancel();
+
+    document.getElementById("continuousButton").textContent =
+      "🔁 START CONTINUOUS CONVERSATION";
+
+    document.getElementById("wakeWordButton").textContent =
+      "🎧 ENABLE HEY JARVIS";
+
+    document.getElementById("status").textContent =
+      "● SYSTEM ONLINE";
+
+    showResponse("Voice listening stopped.");
+    return;
+  }
+
+  // OPEN YOUTUBE
+  if (command.includes("open youtube")) {
+    openYouTube();
+    showResponse("Opening YouTube.");
+    speak("Opening YouTube.");
+    return;
+  }
+
+  // OPEN WHATSAPP
+  if (command.includes("open whatsapp")) {
+    openWhatsApp();
+    showResponse("Opening WhatsApp.");
+    speak("Opening WhatsApp.");
+    return;
+  }
+
+  // OPEN GEMINI
+  if (command.includes("open gemini")) {
+    openGemini();
+    showResponse("Opening Gemini.");
+    speak("Opening Gemini.");
+    return;
+  }
+
+  // SEND OTHER MESSAGES TO AI
   await sendToJarvis(message);
 }
 
